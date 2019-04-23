@@ -1,0 +1,58 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Notebook Diff",
+            "type": "shell",
+            "command": "${config:python.pythonPath}/../Scripts/nbdiff-web",
+            "args": [],
+            "presentation": {
+                "clear": true,
+                "focus": true,
+                "panel": "dedicated",
+                "reveal": "always"
+            },
+            "group": "test",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "downloadKB"
+            }
+        },
+        {
+            "label": "Environment: Create And Configure Environment",
+            "type": "shell",
+            "command": "setup-nbdiff.bat",
+            "args": [
+                "${input:environmentName}"
+            ],
+            "problemMatcher": [],
+            "options": {
+                "cwd": "downloadKB"
+            }
+        },
+        {
+            "label": "Environment: Clean Conda Environment",
+            "type": "shell",
+            "command": "conda",
+            "args": [
+                "env",
+                "remove",
+                "--name", "${input:environmentName}",
+            ],
+            "problemMatcher": [],
+            "options": {
+                "cwd": "downloadKB"
+            }
+        },
+    ],
+    "inputs": [
+        {
+            "id": "environmentName",
+            "type": "promptString",
+            "description": "Enter an environment name",
+            "default": "ir_automation"
+        }
+    ]
+}

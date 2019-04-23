@@ -1,0 +1,39 @@
+# Load Packages From Following
+channels:
+  - conda-forge
+  - defaults
+
+# Define Environment Dependencies
+dependencies:
+ - python=3.6
+
+# Mathematics Libraries
+ - pandas
+ - numpy
+ - scipy
+
+# Plotting Libraries
+ - matplotlib
+ - seaborn
+
+# Jupyter Notebooks
+ - jupyter
+
+# Miscellaneous Libraries
+ - pylint
+ - autopep8
+ - xlrd
+ - graphviz
+ - pydotplus
+
+# Beautiful Soup
+# For webscraping
+ - beautifulsoup4
+ - lxml
+ - html5lib
+ - wikipedia
+
+# Libraries not available through available channels
+# So we use pip install as fallback
+#  - pip:
+#    - pip-only-library
