@@ -2,10 +2,13 @@
 
 import os
 import wikipedia
-import threading
+import multiprocessing
 
-# Get Current File Path
+# Get Current File Path (If downloading to local repo)
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
+# Set Dataset Path (If downloading external to this repo)
+dir_path = 'D:/datasets/Wikipedia/IFRS_17'
 
 # Allows to call this python file from anywhere
 BASE_PATH = dir_path + "/dataset/"
@@ -20,7 +23,7 @@ def downloadRecursive(pageTitle, depth=0):
     except Exception as e:
         print("Exception occurred:", str(e),
               "|",
-              "Thread:", threading.get_ident())
+              "Process:", os.getpid())
         return
 
     try:
@@ -29,33 +32,32 @@ def downloadRecursive(pageTitle, depth=0):
             with open(filePath, "w+") as text_file:
                 print("Downloading:", wikipediaPage.title,
                       "|",
-                      "Thread:", threading.get_ident())
+                      "Process:", os.getpid())
                 text_file.write(wikipediaPage.content)
         else:
             print("Skipping:", wikipediaPage.title,
                   "|",
-                  "Thread:", threading.get_ident())
+                  "Process:", os.getpid())
     except Exception as e:
         print("Exception occurred:", str(e),
               "|",
-              "Thread:", threading.get_ident())
+              "Process:", os.getpid())
 
     # Measure Depth
-    depth = depth + 1
     if depth > DEPTH_LIMIT:
         return
 
-    threads = []
+    processes = []
 
     # Apply recursion in parallel
     for link in wikipediaPage.links:
-        downloadRecursive(pageTitle=link, depth=depth)
-        thread = threading.Thread(target=downloadRecursive, args=(link, depth))
-        thread.start()
-        threads.append(thread)
+        downloadRecursive(pageTitle=link, depth=depth+1)
+        process = multiprocessing.Process(target=downloadRecursive, args=(link, depth))
+        process.start()
+        processes.append(process)
 
-    for thread in threads:
-        thread.join()
+    for process in processes:
+        process.join()
 
 if __name__ == "__main__":
     downloadRecursive(BASE_PAGE)
