@@ -1,10 +1,10 @@
 ECHO ON
 
 REM Create the Conda environment
-conda env update --name %~1 --file environment.yml
+conda env update --name "%~1" --file environment.yml
 
 REM Switch to the newly created environment
-activate ir_automation
+activate "%~1"
 
 REM Configure Notebook Diff
 nbdime extensions --enable
